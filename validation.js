@@ -7,9 +7,10 @@ btnSubmit.addEventListener("click", (e) => {
   if (!isTxt("comments", 20)) e.preventDefault();
   if (!isEmail("email")) e.preventDefault();
 
-
   if (!isCheck("gender")) e.preventDefault();
   if (!isCheck("hobby")) e.preventDefault();
+
+  if (!isCheck("edu")) e.preventDefault();
 });
 
 //1. type이 text인 form요소 인증 함수 
@@ -95,4 +96,35 @@ function isCheck(el) {
     input[0].closest("td").append(errMsg);
     return false;
   }
+}
+
+
+
+//4. select 인증 함수 
+
+function isSelct(el) {
+  let sel = form.querySelector(`[name]=${el}`);
+  let sel_index = sel.options.selectedIndex;
+  //select 요소에 접근해서 자식 요소인 option들 중에 선택 되어진 index를 찾아서 해당 인덱스를 가지고 옴(number)
+  let val = sel[sel_index].value;
+
+  if (val !=="") {
+
+    const errMsgs = sel.closest("td").querySelectorAll("p");
+    if (errMsgs.length > 0) sel.closest("td").querySelector("p").remove;
+
+    return true;
+  } else {
+
+    const errMsgs = sel.closest("td").querySelectorAll("p");
+    if (errMsgs.length > 0) return false;
+
+
+    const errMsg = document.createElement("p");
+    errMsg.append("항목을 선택해 주세요");
+    sel.closest("td").append(errMsg);
+
+    return false;
+  }
+
 }
