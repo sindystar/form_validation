@@ -5,7 +5,11 @@ btnSubmit.addEventListener("click", (e) => {
 
   if (!isTxt("userid", 5)) e.preventDefault();
   if (!isTxt("comments", 20)) e.preventDefault();
-  if (!isTxt("email")) e.preventDefault();
+  if (!isEmail("email")) e.preventDefault();
+
+
+  if (!isCheck("gender")) e.preventDefault();
+  if (!isCheck("hobby")) e.preventDefault();
 });
 
 //1. type이 text인 form요소 인증 함수 
@@ -60,6 +64,35 @@ function isEmail(el) {
     const errMsg = document.createElement("p");
     errMsgs.append("@를 포함한 전체이메일 주소를 입력하세요");
     input.closest("td").append(errMsgs);
+    return false;
+  }
+}
+
+//3.check 인증 함수 
+
+function isCheck(el) {
+  let input = form.querySelectorAll(`[name=${el}]`);
+  let isCheck = false;
+
+  //input의 갯수만큼 반복을 돌면서 체크가 되어있는지를 확인해서 하나라도 체크가 되어있다면 isCheck를  true바꿔줌 
+  for (let el of inputs) {
+    if (el.isCheck) isCheck = true;
+  }
+
+  if (isCheck) {
+    const errMsgs = input[0].closest("td").querySelectorAll("p");
+    //있다면 제거하고 
+    if (errMsgs.length > 0) inputs[0].closest("td").querySelector("p").remove();
+
+
+    return true;
+  } else {
+    const errMsgs = input[0].closest("td").querySelectorAll("p");
+    if (errMsgs.length > 0) return false;
+
+    const errMsg =document.createAttribute("p");
+    errMsg.append("필수 입력항목을 체크해주세요");
+    input[0].closest("td").append(errMsg);
     return false;
   }
 }
