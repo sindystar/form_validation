@@ -11,6 +11,8 @@ btnSubmit.addEventListener("click", (e) => {
   if (!isCheck("hobby")) e.preventDefault();
 
   if (!isCheck("edu")) e.preventDefault();
+
+  if (!isPwd ("pwd1", "pwd2", 5)) e.preventDefault();
 });
 
 //1. type이 text인 form요소 인증 함수 
@@ -128,3 +130,72 @@ function isSelct(el) {
   }
 
 }
+
+//5.패스워드 인증 함수 
+
+function isPwd(el1, el2, len) {
+  let pwd1 = form.querySelector(`[name=${el1}]`);
+  let pwd2 = form.querySelector(`[name=${el2}]`);
+  let pwd1_val = pwd1.value;
+  let pwd2_val = pwd2.value;
+
+  //숫자, 문자, 특수문자 조건을 정규 표현식으로 변수로 저장
+  const num = /[0-9]/;
+  const eng = /[a-zA-Z]/;
+  const spc = /[~!@#$%^&*()_+?><]/;
+
+
+  //두개의 비밀번호가 같고 (그리고) 비밀번호의 글자수가 len개 이상 (그리고) 
+
+  //비밀번호에 num이 포함 (그리고) 비밀번호에 eng포함 (그리고) 비밀번호에 spc가 포함 
+
+  if (pwd1_val === pwd2_val && pwd1_val.length >= len && num.test
+    (pwd1_val) && eng.test(pwd1_val) && spc.test(pwd1_val)) {
+      const errMsgs = pwd1.closest("td").querySelectorAll("p");
+      //있다면 제거하고 
+      if (errMsgs.length > 0) pwd1.closest("td").querySelector("p").remove();
+      return true;
+    } else {
+
+      const errMsgs = pwd1.closest("td").querySelectorAll("p");
+      //있다면 제거하고 
+      if (errMsgs.length > 0) return false;
+      const errMsg = document.createAttribute("p");
+      errMsgs.append(`비밀번호는 ${len}글자이상, 영문, 숫자, 특수문자를 포함하여 동일하게 입력하세요`);
+      pwd1.closest("td").append(errMsg);
+      return false;
+    }
+}
+
+/*
+조건 : 두개의 비밀번호가 같다
+길이가 몇글자 이상인가?
+숫자가 포함되는지?
+특수문자가 포함 되는지?
+영문자가 포함 되는가?
+
+true || true = true
+
+false || true = true
+
+true || false = true
+
+false || false = false
+
+
+하나가 true면 true   둘다  false 여야 false 
+
+
+true && true = true
+
+false && true = fasle
+
+true && false = false
+
+false && false
+
+
+둘다 true면  true  둘중 하나가 false 면 false
+[출처] 자바스크립트 배우기 10 (conditional 조건문2  and , or) | 작성자 묭돌
+
+*/
